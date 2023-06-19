@@ -1,0 +1,17 @@
+version: "2"
+
+
+services:
+    worker-tracking-app:
+        extends:
+            file: worker_tracking/app.yml
+            service: worker_tracking
+        networks:
+            internal:
+                aliases:
+                    - worker.tracking.docker.local
+        restart: unless-stopped
+
+networks:
+    internal:
+        name: manualLab
