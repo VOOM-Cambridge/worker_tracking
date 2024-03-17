@@ -1,13 +1,20 @@
 [constants]
-serialID = '16c0:27db'
-location = 'Manual_Lab' 
+serialID = 'ffff:0035'
+location = 'Manual_Lab'
 brokerIP = 'mqtt.docker.local'
 
+[input.scanner]
+serial = "ffff_0035"
+connection_point = ["0", "1.1"]
+
 [docker]
-    url = "http://timeseries-db.docker.local:1883"
-    frequency_record_seconds = 1
-    ## Token for authentication.
+url = "http://timeseries-db.docker.local:1883"
+frequency_record_seconds = 1
+## Token for authentication.
 
 [sqlite3]
-    dataBaseName = 'WORKER'
-    filePath = 'data/workerData.db'
+dataBaseName = 'WORKER'
+filePath = 'data/workerData.db'
+
+[factory]
+name = "Manual Assembly"
