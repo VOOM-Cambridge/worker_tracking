@@ -71,8 +71,11 @@ class BarcodeScanner(multiprocessing.Process):
                 try:
                     serial_option_1 = dev.properties['ID_SERIAL']
                     serial_option_2 = f"{dev.properties['ID_VENDOR_ID']}_{dev.properties['ID_MODEL_ID']}"
+                    logger.info(serial_option_1)
                     if dev.properties['ID_INPUT_KEYBOARD'] == "1" and (
                             serial_option_1 == self.scanner_serial or serial_option_2 == self.scanner_serial):
+                        logger.info("********")
+                        logger.info(self.connection_point[0])
                         if self.connection_point[0] != '*':
                             _, connection_point = dev.properties['ID_PATH'].split('-usb-')
                             cp_entries = connection_point.split(':')
