@@ -107,6 +107,7 @@ class sqliteConnect(multiprocessing.Process):
     def run(self):
         logger.info("Starting")
         self.do_connect()
+        self.connect()
         logger.info("ZMQ Connected")
         run = True
         while run:

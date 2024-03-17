@@ -9,6 +9,6 @@ services:
     devices:
       - /dev/input:/dev/input:ro
     volumes:
-      - ./config/config_1.toml:/app/config.toml
+      - ./config:/app/config
       - /etc/localtime:/etc/localtime:ro
       - /run/udev:/run/udev:ro
