@@ -17,8 +17,8 @@ class MQTT_forwarding(multiprocessing.Process):
         super().__init__()
 
 
-        self.name = config["Factory"]["name"]
-        self.mqqt_rec = config["mqqt_send"]
+        self.name = config["factory"]["name"]
+        self.mqqt_rec = config["mqtt_send"]
 
         # declarations
         self.zmq_conf = zmq_conf

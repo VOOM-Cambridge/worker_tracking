@@ -10,5 +10,6 @@ services:
       - /dev/input:/dev/input:ro
     volumes:
       - ./config:/app/config
-      - /etc/localtime:/etc/localtime:ro
-      - /run/udev:/run/udev:ro
+      - ./data:/app/data
+      #- /etc/localtime:/etc/localtime:ro
+      #- /run/udev:/run/udev:ro

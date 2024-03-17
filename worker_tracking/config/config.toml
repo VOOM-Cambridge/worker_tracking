@@ -7,6 +7,10 @@ brokerIP = 'mqtt.docker.local'
 serial = "ffff_0035"
 connection_point = ["0", "1.3"]
 
+[[mqtt_send]]
+url = "129.169.48.173"
+port = 1883
+topic = "worker_tracking/"
 
 [sqlite3]
 dataBaseName = 'WORKER'

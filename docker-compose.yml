@@ -14,4 +14,4 @@ services:
 networks:
     internal:
         name: Manual
-        external: true
+        # external: true

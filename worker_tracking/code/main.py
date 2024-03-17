@@ -37,9 +37,9 @@ def create_building_blocks(config):
     back_end_out = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4001", "bind": True}
     mqtt_out = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4001", "bind": False}
 
-    bbs["scan"] = BarcodeScanner(config, scan_out)
+    bbs["scan"] = BarcodeScanner(config, {'out': scan_out})
     bbs["backend"] = sqliteConnect(config, {'in': back_end_In, 'out': back_end_out})
-    bbs["mqtt"] = BarcodeScanner(config, mqtt_out)
+    bbs["mqtt"] = MQTT_forwarding(config, {'in':mqtt_out})
     return bbs
 
 
