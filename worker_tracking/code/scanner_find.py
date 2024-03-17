@@ -109,7 +109,10 @@ class BarcodeScanner(multiprocessing.Process):
         return False
 
     def grab_exclusive_access(self):
-        self.scanner_device.grab()
+        try:
+            self.scanner_device.grab()
+        except:
+            logger.info("Can't grab rfid")
 
     def do_connect(self):
         self.zmq_out = context.socket(self.zmq_conf['out']['type'])

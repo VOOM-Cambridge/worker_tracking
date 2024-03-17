@@ -14,7 +14,7 @@ class sqliteConnect(multiprocessing.Process):
         super().__init__()
         self.tableName = config['sqlite3']['dataBaseName']
         self.fileName = config['sqlite3']['filePath']
-        self.name = config["Factory"]["name"]
+        self.name = config["factory"]["name"]
 
         self.locationID = config['constants']['location'] 
         # declarations

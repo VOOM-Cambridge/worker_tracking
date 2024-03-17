@@ -4,7 +4,7 @@ services:
     worker-tracking-app:
         extends:
             file: worker_tracking/app.yml
-            service: worker_tracking
+            service: app
         networks:
             internal:
                 aliases:
@@ -13,5 +13,5 @@ services:
 
 networks:
     internal:
-        name: manualLab
+        name: Manual
         external: true
