@@ -115,7 +115,7 @@ class sqliteConnect(multiprocessing.Process):
                 msg = self.zmq_in.recv()
                 msg_json = json.loads(msg)
                 logger.info("MQTT_processing: mess recieved to process")
-                self.change_state(msg_json["barcode"], "__blank__")
+                self.change_state(msg_json["barcode"], "")
 
     def change_state(self, barcode, name):
         check = self.checkIfExists(barcode)
@@ -135,17 +135,16 @@ class sqliteConnect(multiprocessing.Process):
             self.addNew(barcode, name, "Log in")
             stateFound = "Log in"
         check = self.checkIfExists(barcode)
-        self.mqtt_send(barcode, stateFound, name, check[4])
-        logger.info(check[4])
+        self.mqtt_send(barcode, stateFound, check[4])
 
-    async def mqtt_send(self, ID_barcode, state_mess, name, workerTime):
+    def mqtt_send(self, ID_barcode, state_mess, workerTime):
         mess = {}
         mess["location"] = self.locationID
         mess["id"] = ID_barcode
         mess["state"] = state_mess
-        mess["name"] = name
+        mess["name"] = self.name
         mess['timeWorked'] = workerTime
         mess["timestamp"]= str(datetime.now())
-        logger.info("Sending messea")
-        await self.zmq_out.send_json(mess)
+        logger.info("Sending messeage")
+        self.zmq_out.send_json(mess)
             
