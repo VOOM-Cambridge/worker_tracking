@@ -55,8 +55,8 @@ class BarcodeScanner(multiprocessing.Process):
     def find_scanner(self):
         import pyudev
         self.udev_ctx = pyudev.Context()
-        for device in self.udev_ctx.list_devices(subsystem='input', ID_BUS='usb'):
-            print("*******")
+        for device in self.udev_ctx.list_devices():
+            logger.info("*******")
             logger.info(device.properties['ID_VENDOR_ID'] + ":" + device.properties['ID_MODEL_ID'])
 
         # try:

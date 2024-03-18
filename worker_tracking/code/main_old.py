@@ -37,7 +37,7 @@ def findDevice():
     context = pyudev.Context()
     rfid_device = []
     #print(list(context.list_devices(subsystem = 'input', ID_BUS = 'usb')))
-    for device in context.list_devices(subsystem = 'input', ID_BUS = 'usb'):
+    for device in context.list_devices():
         ID = device.properties['ID_VENDOR_ID'] + ":" + device.properties['ID_MODEL_ID']
         #ID = device
         if ID == serialID and device.device_node != None:
