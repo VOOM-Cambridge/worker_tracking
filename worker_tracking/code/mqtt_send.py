@@ -56,7 +56,7 @@ class MQTT_forwarding(multiprocessing.Process):
         logger.info(port)
         client.connect(host, port)
         out = json.dumps(msg)
-        client.publish(topic,out)
+        client.publish(topic, out)
         logger.info("Sent")
     
     def messeage_process(self, msg_in):
