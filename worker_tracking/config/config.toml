@@ -8,9 +8,9 @@ serial = "ffff_0035"
 connection_point = ["0", "7", "1.0"]
 
 [[mqtt_send]]
-url = "129.169.48.175"
+url = "mqtt.docker.local"
 port = 1883
-topic = "worker_scan/Manual_assembly"
+topic = "worker_scan/"
 
 [sqlite3]
 dataBaseName = 'WORKER'
