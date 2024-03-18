@@ -13,5 +13,5 @@ services:
 
 networks:
     internal:
-        name: Manual
+        name: ManualLab
         external: true

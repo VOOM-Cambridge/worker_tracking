@@ -82,13 +82,12 @@ class MQTT_forwarding(multiprocessing.Process):
                 msg_json = json.loads(msg)
                 print("MQTT_processing: mess recieved to process")
                 msg_send = self.messeage_process(msg_json)
-                for reciever in self.mqqt_rec:
-                    topic = reciever["topic"] + self.name + "/"
-                    data = [topic, msg_send]
-                    logger.info(data)
-                    out = json.dumps(msg_send)
-                    client.publish(topic, out)
-                    logger.info("Sent")
+                topic = self.topic + self.name + "/"
+                data = [topic, msg_send]
+                logger.info(data)
+                out = json.dumps(msg_send)
+                client.publish(topic, out)
+                logger.info("Sent")
     
     def messeage_process(self, msg_in):
         # reverse of above function
