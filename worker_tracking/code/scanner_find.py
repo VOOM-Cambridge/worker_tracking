@@ -66,6 +66,8 @@ class BarcodeScanner(multiprocessing.Process):
             sn=self.scanner_serial, cp=self.connection_point))
 
         for dev in self.udev_ctx.list_devices(subsystem='input', ID_BUS='usb'):
+            logger.info(dev.properties['ID_SERIAL'])
+            logger.info(dev.device_node)
             if dev.device_node is not None:
 
                 try:
