@@ -45,9 +45,11 @@ class MQTT_forwarding(multiprocessing.Process):
                 msg_send = self.messeage_process(msg_json)
                 for reciever in self.mqqt_rec:
                     topic = reciever["topic"] + self.name
+                    out = [reciever["url"], reciever["port"], topic, msg_send]
+                    logger.info(out)
                     self.message_send(reciever["url"], reciever["port"], topic, msg_send)
                 
-    def message_send(host, port, topic, msg):
+    def message_send(self, host, port, topic, msg):
         try:
             client =mqtt.Client("aas_test" +str(random.randrange(1,1000)))
             client.connect(host, port)
