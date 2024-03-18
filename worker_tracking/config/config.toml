@@ -7,10 +7,6 @@ brokerIP = 'mqtt.docker.local'
 serial = "ffff_0035"
 connection_point = ["0", "7", "1.0"]
 
-[[mqtt_send]]
-url = "mqtt.docker.local"
-port = 1883
-topic = "worker_scan/"
 
 [sqlite3]
 dataBaseName = 'WORKER'
@@ -18,3 +14,19 @@ filePath = 'data/workerData.db'
 
 [factory]
 name = "Manual Assembly"
+
+[service_layer.mqtt]
+broker = "mqtt.docker.local"
+port = 1883
+base_topic_template = ""
+topic = "worker_scan/"
+
+#reconnection characteristics
+# start: timeout = initial,
+# if timeout < limit then
+#   timeout = timeout*backoff
+# else
+#   timeout = limit
+reconnect.initial = 5 # seconds
+reconnect.backoff = 2 # multiplier
+reconnect.limit = 60  # seconds
