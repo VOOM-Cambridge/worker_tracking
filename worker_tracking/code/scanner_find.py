@@ -8,6 +8,7 @@ import evdev
 import asyncio
 import zmq
 import zmq.asyncio
+import pyudev
 
 from KeyParser.Keyparser import Parser
 
@@ -52,6 +53,8 @@ class BarcodeScanner(multiprocessing.Process):
         self.grab_exclusive_access()
 
     def find_scanner(self):
+        self.udev_ctx = pyudev.Context()
+        logger.info(self.udev_ctx.list_devices(subsystem='input', ID_BUS='usb'))
         try:
             import pyudev
             logger.info("pyudev version: {vsn}".format(vsn=pyudev.__version__))
@@ -60,11 +63,11 @@ class BarcodeScanner(multiprocessing.Process):
             logger.error("Unable to import pyudev. Ensure that it is installed")
             exit(0)
 
-        self.udev_ctx = pyudev.Context()
+        
 
         logger.info("Looking for barcode reader with serial number {sn} on connection point {cp}".format(
             sn=self.scanner_serial, cp=self.connection_point))
-
+        
         for dev in self.udev_ctx.list_devices(subsystem='input', ID_BUS='usb'):
             logger.info(dev.properties['ID_SERIAL'])
             logger.info(dev.device_node)
