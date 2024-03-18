@@ -51,7 +51,9 @@ class MQTT_forwarding(multiprocessing.Process):
                 
     def message_send(self, host, port, topic, msg):
         logger.info("Sending ...")
-        client =mqtt.Client("aas_test")
+        client =mqtt.Client("aas_test_111")
+        logger.info(host)
+        logger.info(port)
         client.connect(host, port)
         out = json.dumps(msg)
         client.publish(topic,out)
