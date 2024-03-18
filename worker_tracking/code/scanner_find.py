@@ -53,15 +53,16 @@ class BarcodeScanner(multiprocessing.Process):
         self.grab_exclusive_access()
 
     def find_scanner(self):
+        import pyudev
         self.udev_ctx = pyudev.Context()
         logger.info(self.udev_ctx.list_devices(subsystem='input', ID_BUS='usb'))
-        try:
-            import pyudev
-            logger.info("pyudev version: {vsn}".format(vsn=pyudev.__version__))
-            logger.info("udev version: {vsn}".format(vsn=pyudev.udev_version()))
-        except ImportError:
-            logger.error("Unable to import pyudev. Ensure that it is installed")
-            exit(0)
+        # try:
+        #     import pyudev
+        #     logger.info("pyudev version: {vsn}".format(vsn=pyudev.__version__))
+        #     logger.info("udev version: {vsn}".format(vsn=pyudev.udev_version()))
+        # except ImportError:
+        #     logger.error("Unable to import pyudev. Ensure that it is installed")
+        #     exit(0)
 
         
 
