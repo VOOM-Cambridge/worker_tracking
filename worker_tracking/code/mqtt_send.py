@@ -50,13 +50,12 @@ class MQTT_forwarding(multiprocessing.Process):
                     self.message_send(reciever["url"], reciever["port"], topic, msg_send)
                 
     def message_send(self, host, port, topic, msg):
-        try:
-            client =mqtt.Client("aas_test" +str(random.randrange(1,1000)))
-            client.connect(host, port)
-            out = json.dumps(msg)
-            client.publish(topic,out)
-        except Exception:
-            print(Exception)
+        logger.info("Sending ...")
+        client =mqtt.Client("aas_test" +str(random.randrange(1,1000)))
+        client.connect(host, port)
+        out = json.dumps(msg)
+        client.publish(topic,out)
+        logger.info("Sent")
     
     def messeage_process(self, msg_in):
         # reverse of above function
