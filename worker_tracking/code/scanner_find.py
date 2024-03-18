@@ -57,7 +57,10 @@ class BarcodeScanner(multiprocessing.Process):
         self.udev_ctx = pyudev.Context()
         for device in self.udev_ctx.list_devices():
             logger.info("*******")
-            logger.info(device.properties['ID_VENDOR_ID'] + ":" + device.properties['ID_MODEL_ID'])
+            try:
+                logger.info(device.properties['ID_VENDOR_ID'])
+            except:
+                logger.info(device.properties)
 
         # try:
         #     import pyudev
