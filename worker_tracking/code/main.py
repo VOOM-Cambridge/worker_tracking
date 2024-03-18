@@ -32,9 +32,9 @@ def config_valid(config):
 def create_building_blocks(config):
     bbs = {}
 
-    scan_out = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4000", "bind": True}
+    scan_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4000", "bind": True}
     back_end_In = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4000", "bind": False}
-    back_end_out = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4001", "bind": True}
+    back_end_out = {"type": zmq.PUSH, "address": "tcp://127.0.0.1:4001", "bind": True}
     mqtt_out = {"type": zmq.PULL, "address": "tcp://127.0.0.1:4001", "bind": False}
 
     bbs["scan"] = BarcodeScanner(config, {'out': scan_out})

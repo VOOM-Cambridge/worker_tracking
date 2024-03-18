@@ -66,13 +66,13 @@ class BarcodeScanner(multiprocessing.Process):
         #     except:
         #         logger.info(device.properties)
 
-        # try:
-        #     import pyudev
-        #     logger.info("pyudev version: {vsn}".format(vsn=pyudev.__version__))
-        #     logger.info("udev version: {vsn}".format(vsn=pyudev.udev_version()))
-        # except ImportError:
-        #     logger.error("Unable to import pyudev. Ensure that it is installed")
-        #     exit(0)
+        try:
+            import pyudev
+            logger.info("pyudev version: {vsn}".format(vsn=pyudev.__version__))
+            logger.info("udev version: {vsn}".format(vsn=pyudev.udev_version()))
+        except ImportError:
+            logger.error("Unable to import pyudev. Ensure that it is installed")
+            exit(0)
 
         
 
