@@ -9,6 +9,8 @@ services:
         #         driver: syslog
         #         options:
         #                 tag: mapview.docker.local
+        volumes:
+            - ./data:/app/data
         networks:
             internal:
                 aliases:
@@ -37,6 +39,8 @@ services:
             internal:
                 aliases:
                     - sqlite-db.docker.local
+        volumes:
+            - ./data:/data
         # logging:
         #         driver: syslog
         #         options:
@@ -46,4 +50,4 @@ services:
 networks:
     internal:
         name: ManualLab
-        external: true
+        #external: true
