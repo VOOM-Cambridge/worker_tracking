@@ -5,10 +5,42 @@ services:
         extends:
             file: worker_tracking/app.yml
             service: app
+        # logging:
+        #         driver: syslog
+        #         options:
+        #                 tag: mapview.docker.local
         networks:
             internal:
                 aliases:
                     - worker.tracking.docker.local
+        restart: unless-stopped
+    dashboard:
+        extends:
+            file: dashboard/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - dashboard.docker.local
+        # logging:
+        #         driver: syslog
+        #         options:
+        #                 tag: mapview.docker.local
+        restart: unless-stopped
+        depends_on:
+            - "sqlite-db"
+    sqlite-db:
+        extends:
+            file: DB_Backend/app.yml
+            service: app
+        networks:
+            internal:
+                aliases:
+                    - sqlite-db.docker.local
+        # logging:
+        #         driver: syslog
+        #         options:
+        #                 tag: sqlite-db
         restart: unless-stopped
 
 networks:

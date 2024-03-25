@@ -1,0 +1,6 @@
+{
+    "sqlite3":{"dataBaseName":"WORKER",
+    "filePath" :"data/workerData.db",
+    "url":"localhost",
+    "port":8700}
+}
