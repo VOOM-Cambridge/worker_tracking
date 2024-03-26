@@ -40,7 +40,7 @@ services:
                 aliases:
                     - sqlite-db.docker.local
         volumes:
-            - ./data:/data
+            - ./data:/app/data
         # logging:
         #         driver: syslog
         #         options:

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Container, Form, Card, Col, Row, Button} from 'react-bootstrap'
 import './index.css';
+import mqtt from 'mqtt';
 
 const WorkerView = ({config}) => {
   const [data, setData] = useState([]);
@@ -10,7 +11,29 @@ const WorkerView = ({config}) => {
   const backendAll = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/workerAll"
   const backendUpdate = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/update"
   const backendWorker = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/worker"
+  const wsaddress = 'ws://' + config.service_layer.broker + ":" + config.service_layer.port
+  
+  const client = mqtt.connect(wsaddress);
 
+  useEffect(() => {
+    client.on('connect', () => {
+      console.log('Connected to MQTT broker');
+    });
+
+    client.on('error', (error) => {
+      console.error('Error connecting to MQTT broker:', error);
+    });
+
+    return () => {
+      client.end(); // Disconnect from the MQTT broker when the component unmounts
+    };
+    }, [client]);
+
+  const sendMessage = (message) => {
+    client.publish(config.service_layer.topic, message);
+    console.log('Message sent:', message);
+  };
+    
   const fetchDate = async () => {
       const resE = await axios.get(backendAll)
       if (resE.data != null){
@@ -62,9 +85,9 @@ if (status == "Log out"){
 const updateValue = async (id, time_last, status, time_worked) =>{
     let timeWork = time_worked
     let statusNew = ""
+    const dateNew = new Date();
     if (status == "Log in"){
         const dateOld = new Date(time_last);
-        const dateNew = new Date();
         timeWork = (dateOld.getTime() - dateNew.getTime())/1000;
         statusNew = "Log out"
     } else{
@@ -78,6 +101,14 @@ const updateValue = async (id, time_last, status, time_worked) =>{
         "timeWorked": timeWork,
     }
     await axios.post(backendUpdate, values)
+    const valuesMQTT = {
+        "id":  id,
+        "status": statusNew,
+        "timeWorked": String(timeWork),
+        "timestamp": dateNew,
+        "location": config.location
+    }
+    sendMessage(JSON.stringify(valuesMQTT))
     fetchDate()
 }
 

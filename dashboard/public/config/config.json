@@ -1,6 +1,18 @@
 {
-    "sqlite3":{"dataBaseName":"WORKER",
-    "filePath" :"data/workerData.db",
-    "url":"localhost",
-    "port":8700}
+    "sqlite3":
+    {
+        "dataBaseName":"WORKER",
+        "filePath" :"data/workerData.db",
+        "url":"localhost",
+        "port":8700
+    },
+    "service_layer":
+    {
+        "broker":"129.169.48.173",
+        "port":9001,
+        "base_topic_template":"",
+        "topic":"worker_scan/"
+    },
+    "location": "3D_Printing"
+
 }
