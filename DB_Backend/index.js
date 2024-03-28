@@ -63,9 +63,10 @@ app.post("/update", async (req, res) => {
     const queryUpdate = "UPDATE WORKER SET STATUS = (?), TIME_LAST_ACTION = (?), TIME_WORKED = (?), TIME_WORKED_TODAY = (?) WHERE IDNUM = (?)";
     if(req.body != null){
     const currentDate = new Date();
+    const stringDate = getDateDatabase(currentDate)
     const values = [
       req.body.status,
-      currentDate,
+      stringDate,
       req.body.timeWorked,
       req.body.timeWorked,
       req.body.id
@@ -81,6 +82,16 @@ app.post("/update", async (req, res) => {
   // }
 });
 
+const getDateDatabase = (date) => {
+    console.log(date)
+    const dateNew = new Date(date)
+    const year = dateNew.getFullYear();
+    const month = String(dateNew.getMonth() + 1).padStart(2, '0');
+    const day = String(dateNew.getDate()).padStart(2, '0');
+    const time = String(dateNew.toLocaleTimeString())
+    const formattedDate =  year + "-" + month + "-" + day + " " + time
+    return formattedDate;
+};
 
 app.listen(8700, () => {
   console.log("Connected to backend.");

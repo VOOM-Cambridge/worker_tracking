@@ -74,6 +74,8 @@ const getDate = (date) => {
     return formattedDate;
 };
 
+
+
 const setLogText = (status) =>{
 if (status == "Log out"){
     return "Log In"
@@ -88,7 +90,7 @@ const updateValue = async (id, time_last, status, time_worked) =>{
     const dateNew = new Date();
     if (status == "Log in"){
         const dateOld = new Date(time_last);
-        timeWork = (dateOld.getTime() - dateNew.getTime())/1000;
+        timeWork = Math.round(time_worked + (dateNew.getTime() - dateOld.getTime())/1000);
         statusNew = "Log out"
     } else{
         timeWork = time_worked;
