@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
+import { format } from 'date-fns';
 
 const app = express();
 app.use(cors());
@@ -89,7 +90,9 @@ const getDateDatabase = (date) => {
     const month = String(dateNew.getMonth() + 1).padStart(2, '0');
     const day = String(dateNew.getDate()).padStart(2, '0');
     const time = String(dateNew.toLocaleTimeString())
-    const formattedDate =  year + "-" + month + "-" + day + " " + time
+    const formattedDate =format(dateNew, 'yyyy-MM-dd HH:mm:ss');
+    //year + "-" + month + "-" + day + " " + time
+
     return formattedDate;
 };
 
