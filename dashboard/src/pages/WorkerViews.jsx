@@ -30,7 +30,7 @@ const WorkerView = ({config}) => {
     }, [client]);
 
   const sendMessage = (message) => {
-    client.publish(config.service_layer.topic, message);
+    client.publish((config.service_layer.topic + config.location + "/"), message);
     console.log('Message sent:', message);
   };
     
@@ -115,12 +115,15 @@ const updateValue = async (id, time_last, status, time_worked) =>{
         "timeWorked": timeWork,
     }
     await axios.post(backendUpdate, values)
+    //const formattedDate =format(dateNew, 'yyyy-MM-dd HH:mm:ss');
     const valuesMQTT = {
-        "id":  id,
-        "status": statusNew,
-        "timeWorked": String(timeWork),
+      "location": config.location,  
+      "id":  id,
+        "state": statusNew,
+        "name": config.location,
+        "timeWorked": timeWork,
         "timestamp": dateNew,
-        "location": config.location
+        
     }
     sendMessage(JSON.stringify(valuesMQTT))
     fetchDate()

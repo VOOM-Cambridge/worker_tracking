@@ -8,11 +8,11 @@
     },
     "service_layer":
     {
-        "broker":"129.169.48.173",
+        "broker":"localhost",
         "port":9001,
         "base_topic_template":"",
         "topic":"worker_scan/"
     },
-    "location": "3D_Printing"
+    "location": "Supplier Casing"
 
 }
