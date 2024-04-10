@@ -49,5 +49,5 @@ services:
 
 networks:
     internal:
-        name: ManualLab
-        #external: true
+        name: voom-network
+        external: true

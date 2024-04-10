@@ -46,6 +46,18 @@ const WorkerView = ({config}) => {
     fetchDate()
 }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // This code block will be executed every 10 seconds
+      //console.log('This is executed every 5 seconds');
+        fetchDate();
+    }, 2000); // 10000 milliseconds = 10 seconds
+
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(interval);
+    
+  }, []); 
+
 const getColor = (status) => {
   if (status == "Log out"){
     return "bg-danger" + " p-3"
@@ -126,27 +138,24 @@ const updateValue = async (id, time_last, status, time_worked) =>{
         <Col><Card.Title className="text-center h2">Last action time </Card.Title></Col>
         <Col></Col>
         </Row>
+        {data.map((result, index) => (
         <Row>
         <Col>
-        {data.map((result, index) => (
+        
             <Card className="p-3"><Card.Text className="text-center h5">{result.IDNUM}</Card.Text></Card>
-        ))}
       </Col>
       <Col>
-      {data.map((result, index) => (
             <Card  text= 'light' className = {getColor(result.STATUS)}><Card.Text className="text-center h5">{getText(result.STATUS)}</Card.Text></Card>
-        ))}</Col>
+      </Col>
         <Col>
-      {data.map((result, index) => (
             <Card  className="p-3"><Card.Text className="text-center h5">{getDate(result.TIME_LAST_ACTION)}</Card.Text></Card>
-        ))}
         </Col>
         <Col>
-            {data.map((result, index) => (
             <Button  text= 'light' className="p-3" onClick={() => updateValue(result.IDNUM, result.TIME_LAST_ACTION, result.STATUS, result.TIME_WORKED)}>{setLogText(result.STATUS)}</Button>
-        ))}
+
         </Col>
       </Row>
+              ))}
       </Card.Body>
       </Card>
       </Container>
