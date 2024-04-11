@@ -4,7 +4,6 @@ import axios from "axios";
 import { Container, Form, Card, Col, Row, Button} from 'react-bootstrap'
 import './index.css';
 import mqtt from 'mqtt';
-import { useMQTTSend } from '../MQTTContext';
 
 const WorkerView = ({config}) => {
   const [data, setData] = useState([]);
@@ -14,13 +13,11 @@ const WorkerView = ({config}) => {
   const backendWorker = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/worker"
   const wsaddress = 'ws://' + config.service_layer.broker + ":" + config.service_layer.port
   
-  //const client = mqtt.connect(wsaddress);
+  let client = mqtt.connect(wsaddress);
   //const sendJsonMessage = useMQTTSend()
-  let client;
 
-  const connectToBroker = () => {
-    client = mqtt.connect('mqtt://test.mosquitto.org'); // Replace with your MQTT broker URL
-
+  useEffect(() => {
+    client = mqtt.connect(wsaddress);
     client.on('connect', () => {
       console.log('Connected to MQTT broker');
     });
@@ -32,19 +29,17 @@ const WorkerView = ({config}) => {
     client.on('close', () => {
       console.log('Connection to MQTT broker closed');
       // Attempt to reconnect after a delay
-      setTimeout(connectToBroker, 5000); // Reconnect after 5 seconds
+      setTimeout(reconnectMqtt, 5000); // Reconnect after 5 seconds
     });
-  };
 
-  useEffect(() => {
-    connectToBroker();
-
-    return () => {
-      if (client) {
-        client.end(); // Disconnect from the MQTT broker when the component unmounts
-      }
+    // return () => {
+    //   client.end(); // Disconnect from the MQTT broker when the component unmounts
+    // };
+    }, [client]);
+  
+    const reconnectMqtt = () => {
+      client = mqtt.connect(wsaddress)
     };
-  }, []);
 
   const sendMessage = (message) => {
     //sendJsonMessage(topic, message);
@@ -62,7 +57,7 @@ const WorkerView = ({config}) => {
 
   useEffect(()=>{
     fetchDate()
-  }, []);
+}, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -150,7 +145,7 @@ const updateValue = async (id, time_last, status, time_worked) =>{
   return (
     <div>
         <div><Container fluid="md">
-      <Card className='mt-2 text-center'>
+      <Card key="main" className='mt-2 text-center'>
         <Card.Header as="h1" >Worker Activity View</Card.Header>
         <Card.Body>
             <Row>
@@ -172,7 +167,7 @@ const updateValue = async (id, time_last, status, time_worked) =>{
             <Card  className="p-3"><Card.Text className="text-center h5">{getDate(result.TIME_LAST_ACTION)}</Card.Text></Card>
         </Col>
         <Col>
-            <Button  key = {index} text= 'light' className="p-3" onClick={() => updateValue(result.IDNUM, result.TIME_LAST_ACTION, result.STATUS, result.TIME_WORKED)}>{setLogText(result.STATUS)}</Button>
+            <Button key ={index} text= 'light' className="p-3" onClick={() => updateValue(result.IDNUM, result.TIME_LAST_ACTION, result.STATUS, result.TIME_WORKED)}>{setLogText(result.STATUS)}</Button>
 
         </Col>
       </Row>
