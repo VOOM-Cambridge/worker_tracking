@@ -50,4 +50,4 @@ services:
 networks:
     internal:
         name: voom-network
-        external: true
+        #external: true

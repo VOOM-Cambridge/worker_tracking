@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     build: .
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+    # volumes:
+    #   - /etc/localtime:/etc/localtime:ro
     ports:
       - "5050:5050"
