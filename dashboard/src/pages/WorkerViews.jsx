@@ -36,6 +36,17 @@ const WorkerView = ({config}) => {
     //   client.end(); // Disconnect from the MQTT broker when the component unmounts
     // };
     }, [client]);
+
+    const AutoRefreshPage = () => {
+    useEffect(() => {
+    const interval = setInterval(() => {
+      window.location.reload();
+    }, 20000); // Refresh every 20 seconds
+
+    return () => {
+      clearInterval(interval); // Clear the interval when the component unmounts
+    };
+  }, []);
   
     const reconnectMqtt = () => {
       client = mqtt.connect(wsaddress)
