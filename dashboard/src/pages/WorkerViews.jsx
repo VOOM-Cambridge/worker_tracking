@@ -37,7 +37,6 @@ const WorkerView = ({config}) => {
     // };
     }, [client]);
 
-    const AutoRefreshPage = () => {
     useEffect(() => {
     const interval = setInterval(() => {
       window.location.reload();
