@@ -78,17 +78,23 @@ class MQTT_forwarding(multiprocessing.Process):
         run = True
         while run:
             while self.zmq_in.poll(500, zmq.POLLIN):
-                msg = self.zmq_in.recv()
-                msg_json = json.loads(msg)
-                print("MQTT_processing: mess recieved to process")
-                self.mqtt_connect(self, client)
-                msg_send = self.messeage_process(msg_json)
-                topic = self.topic + self.name + "/"
-                data = [topic, msg_send]
-                logger.info(data)
-                out = json.dumps(msg_send)
-                client.publish(topic, out)
-                logger.info("Sent")
+                try:
+                    msg = self.zmq_in.recv()
+                    msg_json = json.loads(msg)
+                    print("MQTT_processing: mess recieved to process")
+                    if client.is_connected:
+                        print("MQTT client is connected")
+                    else:
+                        self.mqtt_connect(client)
+                    msg_send = self.messeage_process(msg_json)
+                    topic = self.topic + self.name + "/"
+                    data = [topic, msg_send]
+                    logger.info(data)
+                    out = json.dumps(msg_send)
+                    client.publish(topic, out)
+                    logger.info("Sent")
+                except:
+                    pass
     
     def messeage_process(self, msg_in):
         # reverse of above function

@@ -7,6 +7,8 @@ import mqtt from 'mqtt';
 
 const WorkerView = ({config}) => {
   const [data, setData] = useState([]);
+  const mqttClientRef = useRef(null); // Create a ref to store the MQTT client instance
+
   let url = window.location.hostname;
 
   const backendAll = "http://" + url+ ":" + config.sqlite3.port +"/workerAll"
@@ -14,11 +16,13 @@ const WorkerView = ({config}) => {
   const backendWorker = "http://" + url+ ":" + config.sqlite3.port +"/worker"
   const wsaddress = 'ws://' + url + ":" + config.service_layer.port
   
-  let client = mqtt.connect(wsaddress);
+  let client = null;
   //const sendJsonMessage = useMQTTSend()
 
   useEffect(() => {
     client = mqtt.connect(wsaddress);
+    mqttClientRef.current = client;
+
     client.on('connect', () => {
       console.log('Connected to MQTT broker');
     });
@@ -33,9 +37,9 @@ const WorkerView = ({config}) => {
       setTimeout(reconnectMqtt, 5000); // Reconnect after 5 seconds
     });
 
-    // return () => {
-    //   client.end(); // Disconnect from the MQTT broker when the component unmounts
-    // };
+    return () => {
+      client.end(); // Disconnect from the MQTT broker when the component unmounts
+    };
     }, [client]);
   
     const reconnectMqtt = () => {
