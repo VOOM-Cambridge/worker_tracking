@@ -7,11 +7,12 @@ import mqtt from 'mqtt';
 
 const WorkerView = ({config}) => {
   const [data, setData] = useState([]);
+  let url = window.location.hostname;
 
-  const backendAll = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/workerAll"
-  const backendUpdate = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/update"
-  const backendWorker = "http://" +config.sqlite3.url+ ":" + config.sqlite3.port +"/worker"
-  const wsaddress = 'ws://' + config.service_layer.broker + ":" + config.service_layer.port
+  const backendAll = "http://" + url+ ":" + config.sqlite3.port +"/workerAll"
+  const backendUpdate = "http://" + url+ ":" + config.sqlite3.port +"/update"
+  const backendWorker = "http://" + url+ ":" + config.sqlite3.port +"/worker"
+  const wsaddress = 'ws://' + url + ":" + config.service_layer.port
   
   let client = mqtt.connect(wsaddress);
   //const sendJsonMessage = useMQTTSend()
@@ -36,16 +37,6 @@ const WorkerView = ({config}) => {
     //   client.end(); // Disconnect from the MQTT broker when the component unmounts
     // };
     }, [client]);
-
-    useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload();
-    }, 20000); // Refresh every 20 seconds
-
-    return () => {
-      clearInterval(interval); // Clear the interval when the component unmounts
-    };
-  }, []);
   
     const reconnectMqtt = () => {
       client = mqtt.connect(wsaddress)
