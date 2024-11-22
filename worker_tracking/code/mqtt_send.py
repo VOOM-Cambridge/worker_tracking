@@ -42,11 +42,6 @@ class MQTT_forwarding(multiprocessing.Process):
             self.zmq_in.connect(self.zmq_conf['in']["address"])
 
 
-    def on_disconnect(self, client, _userdata, rc):
-        if rc != 0:
-            logger.error(f"Unexpected MQTT disconnection (rc:{rc}), reconnecting...")
-            self.mqtt_connect(client)
-
     def mqtt_connect(self, client, first_time=False):
         timeout = self.initial
         exceptions = True
@@ -68,10 +63,15 @@ class MQTT_forwarding(multiprocessing.Process):
                 else:
                     timeout = self.limit
 
+    def on_disconnect(self, client, _userdata, rc):
+        if rc != 0:
+            logger.error(f"Unexpected MQTT disconnection (rc:{rc}), reconnecting...")
+            self.mqtt_connect(client)
+
     def run(self):
         logger.info("Starting")
         self.do_connect()
-        client = mqtt.Client()
+        client =mqtt.Client()
         client.on_disconnect = self.on_disconnect
         self.mqtt_connect(client, True)
         logger.info("ZMQ Connected")
@@ -81,6 +81,7 @@ class MQTT_forwarding(multiprocessing.Process):
                 msg = self.zmq_in.recv()
                 msg_json = json.loads(msg)
                 print("MQTT_processing: mess recieved to process")
+                self.mqtt_connect(self, client)
                 msg_send = self.messeage_process(msg_json)
                 topic = self.topic + self.name + "/"
                 data = [topic, msg_send]
@@ -88,6 +89,7 @@ class MQTT_forwarding(multiprocessing.Process):
                 out = json.dumps(msg_send)
                 client.publish(topic, out)
                 logger.info("Sent")
+    
     def messeage_process(self, msg_in):
         # reverse of above function
         newMess = msg_in
