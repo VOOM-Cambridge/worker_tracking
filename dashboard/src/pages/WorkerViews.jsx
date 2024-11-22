@@ -20,6 +20,7 @@ const WorkerView = ({config}) => {
   //const sendJsonMessage = useMQTTSend()
 
   useEffect(() => {
+    if (!mqttClientRef.current) { 
     client = mqtt.connect(wsaddress);
     mqttClientRef.current = client;
 
@@ -31,20 +32,20 @@ const WorkerView = ({config}) => {
       console.error('Error connecting to MQTT broker:', error);
     });
 
-    client.on('close', () => {
-      console.log('Connection to MQTT broker closed');
-      // Attempt to reconnect after a delay
-      setTimeout(reconnectMqtt, 5000); // Reconnect after 5 seconds
-    });
-
-    return () => {
-      client.end(); // Disconnect from the MQTT broker when the component unmounts
-    };
-    }, [client]);
+    // client.on('close', () => {
+    //   console.log('Connection to MQTT broker closed');
+    //   // Attempt to reconnect after a delay
+    //   setTimeout(reconnectMqtt, 5000); // Reconnect after 5 seconds
+    // });
+    }
+    // return () => {
+    //   client.end(); // Disconnect from the MQTT broker when the component unmounts
+    // };
+    }, []);
   
-    const reconnectMqtt = () => {
-      client = mqtt.connect(wsaddress)
-    };
+    // const reconnectMqtt = () => {
+    //   client = mqtt.connect(wsaddress)
+    // };
 
   const sendMessage = (message) => {
     //sendJsonMessage(topic, message);
