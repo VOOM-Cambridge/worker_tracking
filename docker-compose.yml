@@ -46,19 +46,19 @@ services:
         #         options:
         #                 tag: sqlite-db
         restart: unless-stopped
-    mqtt_broker:
-        extends:
-            file: mqtt_broker/app.yml
-            service: app
-        restart: unless-stopped
-        # logging:
-        #     driver: syslog
-        #     options:
-        #         tag: docker-mqtt-broker
-        networks:
-            internal:
-                aliases:
-                    - mqtt.docker.local
+    # mqtt_broker:
+    #     extends:
+    #         file: mqtt_broker/app.yml
+    #         service: app
+    #     restart: unless-stopped
+    #     # logging:
+    #     #     driver: syslog
+    #     #     options:
+    #     #         tag: docker-mqtt-broker
+    #     networks:
+    #         internal:
+    #             aliases:
+    #                 - mqtt.docker.local
 
 networks:
     internal:

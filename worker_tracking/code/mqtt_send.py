@@ -82,10 +82,7 @@ class MQTT_forwarding(multiprocessing.Process):
                     msg = self.zmq_in.recv()
                     msg_json = json.loads(msg)
                     print("MQTT_processing: mess recieved to process")
-                    if client.is_connected:
-                        print("MQTT client is connected")
-                    else:
-                        self.mqtt_connect(client)
+                    self.mqtt_connect(client)
                     msg_send = self.messeage_process(msg_json)
                     topic = self.topic + self.name + "/"
                     data = [topic, msg_send]
